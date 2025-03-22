@@ -1,0 +1,56 @@
+{
+  "holiday": [
+    {
+      "id": "1",
+      "image": "one.png"
+    },
+    {
+      "id": "2",
+      "image": "two.png"
+    },
+    {
+      "id": "3",
+      "image": "three.png"
+    },
+    {
+      "id": "4",
+      "image": "four.png"
+    }
+  ],
+  "islamic": [
+    {
+      "id": "1",
+      "image": "i_1.png"
+    },
+    {
+      "id": "2",
+      "image": "i_2.jpg"
+    },
+    {
+      "id": "3",
+      "image": "i_3.png"
+    },
+    {
+      "id": "4",
+      "image": "i_4.jpg"
+    }
+  ],
+  "national": [
+    {
+      "id": "1",
+      "image": "e_1.png"
+    },
+    {
+      "id": "2",
+      "image": "e_2.png"
+    },
+    {
+      "id": "3",
+      "image": "e_3.png"
+    },
+    {
+      "id": "4",
+      "image": "e_4.png"
+    }
+  ]
+}
