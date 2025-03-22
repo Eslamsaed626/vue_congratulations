@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import response from "../assets/data/data.json";
 
 export default {
   name: "OccareView",
@@ -32,8 +32,8 @@ export default {
   },
   methods: {
     async getOccasion() {
-      let result = await axios.get("http://localhost:3000/" + this.routeParam);
-      this.allOccasions = result.data;
+      let result = response[this.routeParam];
+      this.allOccasions = result;
     },
   },
   mounted() {

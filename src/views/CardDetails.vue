@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import html2canvas from "html2canvas";
+import response from "../assets/data/data.json";
 
 export default {
   name: "CardDetails",
@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     async printThis() {
-      console.log("printing..");
       const el = this.$refs.printcontent;
 
       const options = {
@@ -107,8 +106,6 @@ export default {
           .replace("image/png", "image/octet-stream")
       );
       link.click();
-
-      console.log("done");
     },
 
     texthPlace(place) {
@@ -118,10 +115,10 @@ export default {
       this.vPlace = place;
     },
     async getOneOccasion() {
-      let result = await axios.get(
-        `http://localhost:3000/${this.theId.occasion}/${this.theId.id}`
-      );
-      this.theOccasion = result.data;
+      let routeName = this.theId.occasion;
+      let routeId = this.theId.id;
+      let result = response[routeName][routeId - 1];
+      this.theOccasion = result;
     },
   },
 
