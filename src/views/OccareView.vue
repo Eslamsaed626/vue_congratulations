@@ -34,7 +34,6 @@ export default {
     async getOccasion() {
       let result = await axios.get("http://localhost:3000/" + this.routeParam);
       this.allOccasions = result.data;
-      console.log(result);
     },
   },
   mounted() {
