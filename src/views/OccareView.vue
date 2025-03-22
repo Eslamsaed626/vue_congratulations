@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>occasion</h1>
+    <h1>{{ routeParam }}</h1>
   </div>
   <div class="container">
     <div class="all_occasions">
@@ -34,6 +34,7 @@ export default {
     async getOccasion() {
       let result = await axios.get("http://localhost:3000/" + this.routeParam);
       this.allOccasions = result.data;
+      console.log(result);
     },
   },
   mounted() {
