@@ -4,21 +4,21 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
-            src="../assets/images/img_5955-1.png"
+            src="../assets/images/ramadan.jpg"
             class="d-block w-100"
             alt="..."
           />
         </div>
         <div class="carousel-item">
           <img
-            src="../assets/images/eid_2.jpg"
+            src="../assets/images/natonal.jpg"
             class="d-block w-100"
             alt="..."
           />
         </div>
         <div class="carousel-item">
           <img
-            src="../assets/images/eid_3.jpg"
+            src="../assets/images/eid_7.png"
             class="d-block w-100"
             alt="..."
           />
@@ -61,7 +61,7 @@
               v-if="item.occaseion == 'National events'"
               class="fa-solid fa-house"
             ></i>
-            <p class="m-0">{{ item.occaseion }}</p>
+            <p class="m-0">{{ $t(item.occaseion) }}</p>
           </router-link>
         </div>
       </div>
@@ -86,30 +86,48 @@ export default {
 </script>
 
 <style scoped>
-.carousel-item {
-  height: 476px;
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 60px;
+  height: 45px;
 }
-
+.carousel {
+  height: 450px;
+}
+.carousel-inner,
+.carousel-item,
 .carousel-item img {
   height: 100%;
 }
 
+.carousel-item:after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+}
+
 .sections {
-  margin: 43px 0;
+  background: #fdfaf6;
+  padding: 91px 0;
 }
 .sections .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
 }
 .occasion {
-  width: 250px;
+  width: 23%;
   height: 135px;
-
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .occasion a:hover {
-  background: #263e53;
+  background: #265f91;
   transform: translateY(-5px);
 }
 .occasion a {
@@ -125,5 +143,20 @@ export default {
   height: 100%;
   flex-direction: column;
   justify-content: center;
+}
+
+@media (max-width: 450px) {
+  .carousel {
+    height: 280px;
+  }
+  .sections .occasion {
+    width: 100%;
+  }
+}
+
+@media (min-width: 450px) and (max-width: 768px) {
+  .occasion {
+    width: 31%;
+  }
 }
 </style>

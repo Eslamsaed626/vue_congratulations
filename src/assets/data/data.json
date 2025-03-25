@@ -2,55 +2,43 @@
   "holiday": [
     {
       "id": "1",
-      "image": "one.png"
+      "image": "eid_one.jpg"
     },
     {
       "id": "2",
-      "image": "two.png"
+      "image": "eid_two.jpg"
     },
     {
       "id": "3",
-      "image": "three.png"
-    },
-    {
-      "id": "4",
-      "image": "four.png"
+      "image": "eid_three.jpg"
     }
   ],
   "islamic": [
     {
       "id": "1",
-      "image": "i_1.png"
+      "image": "eid_one.jpg"
     },
     {
       "id": "2",
-      "image": "i_2.jpg"
+      "image": "eid_two.jpg"
     },
     {
       "id": "3",
-      "image": "i_3.png"
-    },
-    {
-      "id": "4",
-      "image": "i_4.jpg"
+      "image": "eid_three.jpg"
     }
   ],
   "national": [
     {
       "id": "1",
-      "image": "e_1.png"
+      "image": "eid_one.jpg"
     },
     {
       "id": "2",
-      "image": "e_2.png"
+      "image": "eid_two.jpg"
     },
     {
       "id": "3",
-      "image": "e_3.png"
-    },
-    {
-      "id": "4",
-      "image": "e_4.png"
+      "image": "eid_three.jpg"
     }
   ]
 }

@@ -2,15 +2,18 @@
   <nav-bar-com></nav-bar-com>
 
   <router-view />
+  <footer-com></footer-com>
 </template>
 
 <script>
+import FooterCom from "./components/FooterCom.vue";
 import NavBarCom from "./components/NavBarCom.vue";
 
 export default {
   setup() {},
   components: {
     NavBarCom,
+    FooterCom,
   },
 };
 </script>
@@ -21,6 +24,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+  flex-direction: column;
 }
 
 nav {

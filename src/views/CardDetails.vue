@@ -2,6 +2,15 @@
   <div class="card_details">
     <div class="container">
       <div class="card_actions">
+        <div>
+          <button class="btn btn-primary m-3" @click="selectText = false">
+            {{ $t("Use Position") }}
+          </button>
+          <button class="btn btn-primary m-3" @click="selectText = true">
+            {{ $t("Use Drag & Drop") }}
+          </button>
+        </div>
+
         <input
           type="text"
           v-model="userName"
@@ -10,45 +19,92 @@
         />
         <div class="actions">
           <div>
-            <input type="range" v-model="sizeText" class="form-control" />
-
-            <input type="color" v-model="colorText" class="form-control" />
+            <div>
+              <label class="form-label">{{ $t("Size") }}</label>
+              <input type="range" v-model="sizeText" class="form-control" />
+            </div>
+            <div>
+              <label class="form-label">{{ $t("Color") }}</label>
+              <input type="color" v-model="colorText" class="form-control" />
+            </div>
           </div>
+
           <div>
+            <div>
+              <label class="form-label">{{ $t("From Left") }}</label>
+              <input
+                type="range"
+                v-model="fromx"
+                class="form-control"
+                min="0"
+                :max="card_image_width"
+              />
+            </div>
+            <div>
+              <label class="form-label">{{ $t("From Top") }}</label>
+
+              <input
+                type="range"
+                v-model="fromy"
+                class="form-control"
+                min="0"
+                :max="card_image_hight"
+              />
+            </div>
+          </div>
+
+          <div v-if="selectText == false">
             <button class="btn btn-primary" @click="texthPlace('start')">
-              Top
+              {{ $t("Top") }}
             </button>
             <button class="btn btn-primary" @click="texthPlace('center')">
-              Center
+              {{ $t("Center") }}
             </button>
             <button class="btn btn-primary" @click="texthPlace('end')">
-              Down
+              {{ $t("Down") }}
+            </button>
+          </div>
+
+          <div v-if="selectText == false">
+            <button class="btn btn-success" @click="textvPlace('left')">
+              {{ $t("Left") }}
+            </button>
+            <button class="btn btn-success" @click="textvPlace('center')">
+              {{ $t("Center") }}
+            </button>
+            <button class="btn btn-success" @click="textvPlace('right')">
+              {{ $t("Right") }}
             </button>
           </div>
 
           <div>
-            <button class="btn btn-success" @click="textvPlace('left')">
-              Left
+            <button class="btn btn-info" @click="printThis">
+              {{ $t("Download") }}
             </button>
-            <button class="btn btn-success" @click="textvPlace('center')">
-              Center
-            </button>
-            <button class="btn btn-success" @click="textvPlace('right')">
-              Right
-            </button>
-          </div>
-          <div>
-            <button class="btn btn-info" @click="printThis">Download</button>
           </div>
         </div>
       </div>
-      <div class="card_image" ref="printcontent">
+      <div
+        class="card_image"
+        ref="printcontent"
+        :style="{
+          height: card_image_hight + 'px',
+          width: card_image_width + 'px',
+        }"
+      >
         <div class="text" :style="{ ...textplace }">
-          <p :style="{ color: colorText, fontSize: sizeText + 'px' }">
+          <p
+            :style="{
+              ...positionText,
+            }"
+            :class="{ absolute: selectText }"
+            ref="square"
+            @mousedown="(e) => startDrag(e)"
+          >
             {{ userName }}
           </p>
         </div>
-        <img v-bind:src="theImage.image" alt="" />
+        <img v-bind:src="theImage.image" alt="" class="w-100 h-100" />
       </div>
     </div>
   </div>
@@ -63,6 +119,8 @@ export default {
   setup() {},
   data() {
     return {
+      fromx: 0,
+      fromy: 0,
       userName: "",
       colorText: "#fff",
       theId: "",
@@ -70,9 +128,26 @@ export default {
       hPlace: "",
       vPlace: "",
       sizeText: "",
+      card_image_hight: "500",
+      card_image_width: "400",
+
+      selectText: false,
+      startXCordinate: 0,
+      startYCordinate: 0,
+      offsetLeft: 0,
+      offsetTop: 0,
+      currentElement: null,
     };
   },
   computed: {
+    positionText() {
+      return {
+        "font-size": this.sizeText + "px",
+        color: this.colorText,
+        top: this.fromy + "px",
+        left: this.fromx + "px",
+      };
+    },
     textplace() {
       return {
         "justify-content": this.vPlace,
@@ -89,6 +164,46 @@ export default {
     },
   },
   methods: {
+    drag(e) {
+      this.startXCordinate = e.clientX;
+      this.startYCordinate = e.clientY;
+
+      if (this.currentElement) {
+        const rect = this.currentElement.getBoundingClientRect();
+        this.offsetLeft = rect.left;
+        this.offsetTop = rect.top;
+      }
+
+      document.addEventListener("mousemove", this.dragOn);
+      document.addEventListener("mouseup", this.dragOff);
+    },
+
+    dragOn(e) {
+      if (this.currentElement) {
+        const containerRect =
+          this.currentElement.parentElement.getBoundingClientRect();
+        const newLeft =
+          e.clientX - containerRect.left - this.currentElement.offsetWidth / 2;
+        const newTop =
+          e.clientY - containerRect.top - this.currentElement.offsetHeight / 2;
+
+        this.currentElement.style.left = `${newLeft}px`;
+        this.currentElement.style.top = `${newTop}px`;
+      }
+    },
+    dragOff() {
+      document.removeEventListener("mousemove", this.dragOn);
+      document.removeEventListener("mouseup", this.dragOff);
+
+      this.currentElement = null;
+    },
+    startDrag(e) {
+      this.selectText = true;
+      this.currentElement = this.$refs.square;
+
+      this.drag(e);
+    },
+
     async printThis() {
       const el = this.$refs.printcontent;
 
@@ -109,9 +224,15 @@ export default {
     },
 
     texthPlace(place) {
+      this.selectText = false;
+      this.fromx = 0;
+      this.fromy = 0;
       this.hPlace = place;
     },
     textvPlace(place) {
+      this.selectText = false;
+      this.fromx = 0;
+      this.fromy = 0;
       this.vPlace = place;
     },
     async getOneOccasion() {
@@ -141,14 +262,15 @@ export default {
 }
 
 .container .card_image {
-  width: 400px;
   position: relative;
   border: 2px solid #eee;
   padding: 5px;
   border-radius: 10px;
+  box-shadow: 0 0 13px #c0c0c0;
 }
 .container .card_image img {
   width: 100%;
+  border-radius: 10px;
 }
 .text {
   position: absolute;
@@ -156,31 +278,61 @@ export default {
   height: 100%;
   color: #fff;
   display: flex;
-  justify-content: center;
+
   padding: 13px 20px;
+  overflow: hidden;
 }
 .text p {
   margin: 0;
+  position: relative;
+  top: 0;
+  left: 0;
 }
 .card_actions {
   width: 30%;
 }
-.actions div {
+
+.actions > div {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  margin: 15px 0;
+
+  padding: 10px 0;
+  border-bottom: 2px solid #a5b68d;
 }
-.actions div button {
-  width: 30%;
+
+.actions > div:first-child div,
+.actions > div:nth-child(2) div {
+  width: 45%;
 }
-/* .actions div:first-child, */
+
+.actions div:last-child {
+  border: none;
+}
 .actions div:last-child button {
   width: 100%;
   color: #fff;
 }
 
-.actions div:first-child input {
-  width: 45%;
+.absolute {
+  display: inline !important;
+  height: 50px !important;
+}
+
+@media (max-width: 425px) {
+  .card_image {
+    width: 300px !important;
+    height: 400px !important;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+
+  .card_actions {
+    width: 94%;
+    margin-top: 26px;
+  }
 }
 </style>
